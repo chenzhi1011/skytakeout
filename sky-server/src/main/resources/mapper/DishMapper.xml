@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+
+    <insert id="addDish" useGeneratedKeys="true" keyProperty="id">
+        insert into dish (category_id,image,name,price,status,description,create_time,create_user,update_time,update_user)
+        values(
+               #{categoryId},
+               #{image},
+               #{name},
+               #{price},
+               #{status},
+               #{description},
+               #{createTime},
+               #{createUser},
+               #{updateTime},
+               #{updateUser}
+        )
+<!--        <set>-->
+<!--            <if test="categoryId!=null and categoryId!=''">category_id = #{categoryId},</if>-->
+<!--            <if test="image!=null and image!=''">image = #{image},</if>-->
+<!--            <if test="name!=null and name!=''">name = #{name},</if>-->
+<!--            <if test="price!=null and price!=''">price = #{price},</if>-->
+<!--            <if test="status!=null and status!=''">status = #{status},</if>-->
+<!--            <if test="description!=null and description!=''">description = #{description}</if>-->
+<!--        </set>-->
+    </insert>
+    <update id="updateById">
+        update dish
+        <set>
+            <if test="categoryId!=null and categoryId!=''">category_id = #{categoryId},</if>
+            <if test="image!=null and image!=''">image = #{image},</if>
+            <if test="name!=null and name!=''">name = #{name},</if>
+            <if test="price!=null and price!=''">price = #{price},</if>
+            <if test="status!=null and status!=''">status = #{status},</if>
+            <if test="description!=null and description!=''">description = #{description}</if>
+        </set>
+        where id =#{id}
+    </update>
+
+
+    <select id="showByPages" resultType="com.sky.vo.DishVO">
+        select d.*,c.name as category_name from dish d left outer join category c on d.category_id=c.id
+        <where>
+            <if test="name!=null">d.name like concat('%',#{name},'%')</if>
+            <if test="categoryId!=null">and d.category_id = #{categoryId}</if>
+            <if test="status!=null">and d.status = #{status}</if>
+        </where>
+        order by d.create_time desc
+    </select>
+
+
+    <select id="selectByIds" resultType="com.sky.vo.DishVO">
+        select * from dish
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectById" resultType="com.sky.vo.DishVO">
+        select * from dish where id = #{id}
+    </select>
+
+    <delete id="deleteByIds">
+        delete from dish
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>
