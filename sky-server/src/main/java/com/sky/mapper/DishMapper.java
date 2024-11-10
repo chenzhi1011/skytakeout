@@ -38,6 +38,16 @@ public interface DishMapper {
 
     DishVO selectById(Long id);
 
+    /**
+     * 动态条件查询菜品
+     *
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
+
     @AutoFill(OperationType.UPDATE)
     void updateById(Dish dish);
+
+
 }
