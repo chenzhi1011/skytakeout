@@ -46,6 +46,8 @@ public interface DishMapper {
      */
     List<Dish> list(Dish dish);
 
+
+
     @AutoFill(OperationType.UPDATE)
     void updateById(Dish dish);
 
